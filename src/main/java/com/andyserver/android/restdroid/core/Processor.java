@@ -407,6 +407,7 @@ public abstract class Processor {
         }
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected void mirrorServerStateRoutine(HTTPVerb verb, ResourceRepresentation<?> resource) throws Exception {
 		resource.setTransactingFlag(true);
         switch(verb) {
@@ -422,7 +423,7 @@ public abstract class Processor {
 			default:
 				break;
         }
-        Persistable<ResourceRepresentation<?>> persistable = mPersistableFactory.getPersistable(resource.getClass());
+        Persistable<ResourceRepresentation<?>> persistable = (Persistable<ResourceRepresentation<?>>) mPersistableFactory.getPersistable(resource.getClass());
         persistable.updateOrCreate(resource);
 	}
 	
@@ -520,8 +521,9 @@ public abstract class Processor {
 	 * @return
 	 * 		Instance of {@link Persistable}
 	 */
+	@SuppressWarnings("unchecked")
 	protected Persistable<Resource> getResourcePersistable(Resource resource) {
-		return mPersistableFactory.getPersistable(resource.getClass());
+		return (Persistable<Resource>) mPersistableFactory.getPersistable(resource.getClass());
 	}
 
 	/**
@@ -557,7 +559,7 @@ public abstract class Processor {
 		if(null == mPersistableFactory)
 			return true;
 		Resource requestResource = request.getResource();
-		Persistable<ResourceRepresentation<?>> persistable = mPersistableFactory.getPersistable(requestResource.getClass());
+		Persistable<ResourceRepresentation<?>> persistable = (Persistable<ResourceRepresentation<?>>) mPersistableFactory.getPersistable(requestResource.getClass());
 		Resource resource = request.getResource();
 		if(resource instanceof ResourceRepresentation) {
 			try {
@@ -622,8 +624,9 @@ public abstract class Processor {
 	 * 
 	 * @throws ParsingException
 	 */
+	@SuppressWarnings("unchecked")
 	protected <R extends Resource> InputStream parseToInputStream(R resource) throws ParsingException {
-		Parser<R> p = mParserFactory.getParser(resource.getClass());
+		Parser<R> p = (Parser<R>) mParserFactory.getParser(resource.getClass());
 		return p.parseToInputStream(resource);
 	}
 
